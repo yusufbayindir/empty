@@ -1,0 +1,71 @@
+name: DocuScan
+options:
+  bundleIdPrefix: com.yusufbayindir
+  deploymentTarget:
+    iOS: "16.0"
+  xcodeVersion: "16.0"
+  generateEmptyDirectories: true
+  swiftVersion: "5.0"
+
+settings:
+  base:
+    SWIFT_VERSION: 5.0
+    IPHONEOS_DEPLOYMENT_TARGET: 16.0
+    MARKETING_VERSION: 1.0.0
+    CURRENT_PROJECT_VERSION: 1
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+
+packages:
+  GoogleMobileAds:
+    url: https://github.com/googleads/swift-package-manager-google-mobile-ads
+    from: "11.0.0"
+  GoogleUserMessagingPlatform:
+    url: https://github.com/googleads/swift-package-manager-google-user-messaging-platform
+    from: "2.0.0"
+
+targets:
+  DocuScan:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - path: DocuScan
+        excludes:
+          - "**/*.yml"
+    resources:
+      - path: DocuScan/Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yusufbayindir.docuscan
+        INFOPLIST_FILE: DocuScan/Resources/Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SWIFT_EMIT_LOC_STRINGS: YES
+        TARGETED_DEVICE_FAMILY: "1,2"
+    dependencies:
+      - package: GoogleMobileAds
+      - package: GoogleUserMessagingPlatform
+
+  DocuScanTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - DocuScanTests
+    dependencies:
+      - target: DocuScan
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yusufbayindir.docuscanTests
+        GENERATE_INFOPLIST_FILE: YES
+
+  DocuScanUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - DocuScanUITests
+    dependencies:
+      - target: DocuScan
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yusufbayindir.docuscanUITests
+        GENERATE_INFOPLIST_FILE: YES
