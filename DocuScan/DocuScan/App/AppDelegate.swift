@@ -1,6 +1,7 @@
 import UIKit
 import UserMessagingPlatform
 import GoogleMobileAds
+import AppTrackingTransparency
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
     func application(
@@ -12,13 +13,15 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     }
 
     private func requestConsentAndStartAds() {
-        // Step 1: UMP consent (must happen before AdMob start)
         let params = UMPRequestParameters()
         params.tagForUnderAgeOfConsent = false
 
         UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: params) { [weak self] error in
             guard error == nil else { return }
-            self?.presentConsentFormIfRequired()
+            // UMP callbacks arrive on an arbitrary thread — switch to main before accessing UIKit.
+            DispatchQueue.main.async {
+                self?.presentConsentFormIfRequired()
+            }
         }
     }
 
@@ -27,13 +30,26 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
               let root = windowScene.windows.first?.rootViewController else { return }
 
         UMPConsentForm.loadAndPresentIfRequired(from: root) { [weak self] _ in
-            // Step 2: After UMP resolved, check ATT + start AdMob
-            self?.startAdMobIfConsented()
+            // Step 2: UMP resolved — request ATT, then start AdMob.
+            DispatchQueue.main.async {
+                self?.requestATTThenStartAdMob()
+            }
         }
     }
 
-    private func startAdMobIfConsented() {
-        // Step 3: Start Google Mobile Ads SDK
+    private func requestATTThenStartAdMob() {
+        if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
+            ATTrackingManager.requestTrackingAuthorization { [weak self] _ in
+                DispatchQueue.main.async {
+                    self?.startAdMob()
+                }
+            }
+        } else {
+            startAdMob()
+        }
+    }
+
+    private func startAdMob() {
         GADMobileAds.sharedInstance().start()
     }
 }

@@ -49,10 +49,10 @@ final class OnboardingViewModel: ObservableObject {
 
     func purchasePremium() {
         isPurchasing = true
-        // Stub: real StoreKit purchase would go here
-        print("Purchase triggered")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+        Task { @MainActor [weak self] in
             guard let self else { return }
+            // Stub: replace with real StoreKit 2 purchase when IAP is wired up.
+            try? await Task.sleep(nanoseconds: 500_000_000)
             self.isPremium = true
             self.isPurchasing = false
             self.complete()
@@ -60,8 +60,7 @@ final class OnboardingViewModel: ObservableObject {
     }
 
     func restorePurchases() {
-        // Stub: real StoreKit restore would go here
-        print("Restore triggered")
+        // Stub: replace with real StoreKit 2 restore when IAP is wired up.
     }
 }
 

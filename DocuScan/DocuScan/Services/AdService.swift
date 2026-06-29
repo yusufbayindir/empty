@@ -3,7 +3,7 @@ import GoogleMobileAds
 import UIKit
 
 @MainActor
-final class AdService: ObservableObject {
+final class AdService: NSObject, ObservableObject {
     @Published private(set) var interstitialAd: GADInterstitialAd?
     @Published private(set) var isPremium: Bool = false
 
@@ -21,8 +21,9 @@ final class AdService: ObservableObject {
     private let interstitialAdUnitID = "ca-app-pub-REPLACE_WITH_REAL_ID/INTERSTITIAL"
     #endif
 
-    init() {
+    override init() {
         isPremium = UserDefaults.standard.bool(forKey: "isPremium")
+        super.init()
         incrementLaunchCount()
         preloadInterstitial()
     }
@@ -34,8 +35,10 @@ final class AdService: ObservableObject {
         let request = GADRequest()
         // swiftlint:disable:next identifier_name
         GADInterstitialAd.load(withAdUnitID: interstitialAdUnitID, request: request) { [weak self] ad, _ in
-            self?.interstitialAd = ad
-            self?.interstitialAd?.fullScreenContentDelegate = self as? GADFullScreenContentDelegate
+            Task { @MainActor [weak self] in
+                self?.interstitialAd = ad
+                self?.interstitialAd?.fullScreenContentDelegate = self
+            }
         }
     }
 
@@ -48,7 +51,6 @@ final class AdService: ObservableObject {
         interstitial.present(fromRootViewController: viewController)
         lastInterstitialTime = Date()
         interstitialAd = nil
-        preloadInterstitial()
     }
 
     func unlockPremium() {
@@ -64,5 +66,24 @@ final class AdService: ObservableObject {
 
     private func incrementLaunchCount() {
         UserDefaults.standard.set(launchCount + 1, forKey: "launchCount")
+    }
+}
+
+// MARK: - GADFullScreenContentDelegate
+
+extension AdService: GADFullScreenContentDelegate {
+    // swiftlint:disable:next identifier_name
+    nonisolated func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        Task { @MainActor [weak self] in
+            self?.preloadInterstitial()
+        }
+    }
+
+    // swiftlint:disable:next identifier_name
+    nonisolated func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        Task { @MainActor [weak self] in
+            self?.interstitialAd = nil
+            self?.preloadInterstitial()
+        }
     }
 }

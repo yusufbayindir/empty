@@ -375,15 +375,12 @@ struct ToolsView: View {
 
             LazyVGrid(columns: columns, spacing: Spacing.md) {
                 ForEach(viewModel.tools) { tool in
-                    // Stub navigation destination — concrete workflow views
-                    // will replace EmptyView as they are built.
-                    NavigationLink(destination: EmptyView()) {
+                    Button {
+                        viewModel.didTapTool(tool)
+                    } label: {
                         ToolCard(tool: tool)
                     }
                     .buttonStyle(.plain)
-                    .simultaneousGesture(TapGesture().onEnded {
-                        viewModel.didTapTool(tool)
-                    })
                 }
             }
         }
