@@ -1,0 +1,10 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "tab.tools" : {"localizations": {"en": {"stringUnit": {"state": "translated", "value": "Tools"}}, "tr": {"stringUnit": {"state": "translated", "value": "Araçlar"}}, "fr": {"stringUnit": {"state": "translated", "value": "Outils"}}, "zh-Hans": {"stringUnit": {"state": "translated", "value": "工具"}}, "de": {"stringUnit": {"state": "translated", "value": "Werkzeuge"}}, "ja": {"stringUnit": {"state": "translated", "value": "ツール"}}, "ar": {"stringUnit": {"state": "translated", "value": "الأدوات"}}}},
+    "tab.recent" : {"localizations": {"en": {"stringUnit": {"state": "translated", "value": "Recent"}}, "tr": {"stringUnit": {"state": "translated", "value": "Son"}}, "fr": {"stringUnit": {"state": "translated", "value": "Récent"}}, "zh-Hans": {"stringUnit": {"state": "translated", "value": "最近"}}, "de": {"stringUnit": {"state": "translated", "value": "Zuletzt"}}, "ja": {"stringUnit": {"state": "translated", "value": "最近"}}, "ar": {"stringUnit": {"state": "translated", "value": "الأخيرة"}}}},
+    "tab.favorites" : {"localizations": {"en": {"stringUnit": {"state": "translated", "value": "Favorites"}}, "tr": {"stringUnit": {"state": "translated", "value": "Favoriler"}}, "fr": {"stringUnit": {"state": "translated", "value": "Favoris"}}, "zh-Hans": {"stringUnit": {"state": "translated", "value": "收藏"}}, "de": {"stringUnit": {"state": "translated", "value": "Favoriten"}}, "ja": {"stringUnit": {"state": "translated", "value": "お気に入り"}}, "ar": {"stringUnit": {"state": "translated", "value": "المفضلة"}}}},
+    "tab.settings" : {"localizations": {"en": {"stringUnit": {"state": "translated", "value": "Settings"}}, "tr": {"stringUnit": {"state": "translated", "value": "Ayarlar"}}, "fr": {"stringUnit": {"state": "translated", "value": "Paramètres"}}, "zh-Hans": {"stringUnit": {"state": "translated", "value": "设置"}}, "de": {"stringUnit": {"state": "translated", "value": "Einstellungen"}}, "ja": {"stringUnit": {"state": "translated", "value": "設定"}}, "ar": {"stringUnit": {"state": "translated", "value": "الإعدادات"}}}}
+  },
+  "version" : "1.0"
+}
